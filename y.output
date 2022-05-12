@@ -162,26 +162,26 @@ RETURN (283) 36
 SEMICOLON (284) 6 7 10
 COLON (285) 13 14 15
 COMMA (286) 16 33 71
-L_PAREN (287) 15 47 67 76
-R_PAREN (288) 15 47 67 76
-L_SQUARE_BRACKET (289) 14 77
-R_SQUARE_BRACKET (290) 14 77
-UMINUS (291)
-MULT (292) 63
-DIV (293) 62
-MOD (294) 61
-ADD (295) 57
-SUB (296) 58 69
-NEQ (297) 51
-EQ (298) 50
-GTE (299) 55
-GT (300) 53
-LTE (301) 54
-LT (302) 52
-NOT (303) 48
-AND (304) 41
-OR (305) 38
-ASSIGN (306) 26
+ASSIGN (287) 26
+OR (288) 38
+AND (289) 41
+NOT (290) 48
+NEQ (291) 51
+EQ (292) 50
+GTE (293) 55
+GT (294) 53
+LTE (295) 54
+LT (296) 52
+ADD (297) 57
+SUB (298) 58 69
+MULT (299) 63
+DIV (300) 62
+MOD (301) 61
+UMINUS (302)
+L_SQUARE_BRACKET (303) 14 77
+R_SQUARE_BRACKET (304) 14 77
+L_PAREN (305) 15 47 67 76
+R_PAREN (306) 15 47 67 76
 IDENT (307) 6 16 17 68 74
 NUMBER (308) 14 66
 
@@ -802,8 +802,8 @@ State 60
 
     TRUE     shift, and go to state 83
     FALSE    shift, and go to state 84
-    L_PAREN  shift, and go to state 85
     SUB      shift, and go to state 66
+    L_PAREN  shift, and go to state 85
 
     L_PAREN   [reduce using rule 70 (subs)]
     $default  reduce using rule 70 (subs)
@@ -1268,8 +1268,8 @@ State 99
 
    68 term_spec: subs IDENT . var_or_bottom
 
-    L_PAREN           shift, and go to state 125
     L_SQUARE_BRACKET  shift, and go to state 72
+    L_PAREN           shift, and go to state 125
 
     $default  reduce using rule 78 (var_spec)
 
