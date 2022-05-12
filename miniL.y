@@ -71,9 +71,8 @@ functions_spec:           functions
                           {printf("functions_spec->functions\n");}
                           ;
 
-
-function:                 FUNCTION IDENT SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGIN_LOCALS declarations END_LOCALS BEGIN_BODY statements END_BODY
-                          {printf("function->FUNCTION IDENT SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGIN_LOCALS declarations END_LOCALS BEGIN_BODY statements END_BODY\n");}
+function:                 FUNCTION ident SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGIN_LOCALS declarations END_LOCALS BEGIN_BODY statements END_BODY
+                          {printf("function->FUNCTION ident SEMICOLON BEGIN_PARAMS declarations END_PARAMS BEGIN_LOCALS declarations END_LOCALS BEGIN_BODY statements END_BODY\n");}
                           ;
 
 declarations:             declaration SEMICOLON declarations_spec
@@ -100,18 +99,18 @@ statementsEnding:         statements
 declaration:              identifiers COLON INTEGER
                           {printf("declaration->identifiers COLON INTEGER\n");}
                           |
-                          identifiers COLON ARRAY L_SQUARE_BRACKET NUMBER R_SQUARE_BRACKET OF INTEGER
-                          {printf("declaration->identifiers COLON ARRAY L_SQUARE_BRACKET NUMBER R_SQUARE_BRACKET OF INTEGER\n");}
+                          identifiers COLON ARRAY L_SQUARE_BRACKET number R_SQUARE_BRACKET OF INTEGER
+                          {printf("declaration->identifiers COLON ARRAY L_SQUARE_BRACKET number R_SQUARE_BRACKET OF INTEGER\n");}
                           |
                           identifiers COLON ENUM L_PAREN identifiers R_PAREN
                           {printf("declaration->identifiers COLON ENUM L_PAREN identifiers R_PAREN\n");}
                           ;
 
-identifiers:              IDENT COMMA identifiers
-                          {printf("identifiers->IDENT COMMA identifiers\n");}
+identifiers:              ident COMMA identifiers
+                          {printf("identifiers->ident COMMA identifiers\n");}
                           |
-                          IDENT
-                          {printf("identifiers->IDENT\n");}
+                          ident
+                          {printf("identifiers->ident\n");}
                           ;
 
 statement:                svar
@@ -280,15 +279,15 @@ multiplicative_operators: MOD term multiplicative_operators
 term:                     term_spec
                           {printf("term->term_spec\n");}
                           |
-                          subs NUMBER
-                          {printf("term->subs NUMBER\n");}
+                          subs number
+                          {printf("term->subs number\n");}
                           |
                           subs L_PAREN expression R_PAREN
                           {printf("term->subs L_PAREN expression R_PAREN\n");}
                           ;
 
-term_spec:                subs IDENT var_or_bottom
-                          {printf("term_spec->subs IDENT var_or_bottom\n");}
+term_spec:                subs ident var_or_bottom
+                          {printf("term_spec->subs ident var_or_bottom\n");}
                           ;
 
 subs:                     SUB
@@ -308,8 +307,8 @@ expressions:              expression COMMA expressions
                           {printf("expressions->epsilon\n");}
                           ;
 
-var:                      IDENT var_spec
-                          {printf("var->IDENT var_spec\n");}
+var:                      ident var_spec
+                          {printf("var->ident var_spec\n");}
                           ;
 
 var_or_bottom:            var_spec
@@ -319,8 +318,6 @@ var_or_bottom:            var_spec
                           {printf("var_or_bottom->L_PAREN expressions R_PAREN\n");}
                           ;
 
-
-
 var_spec:                 L_SQUARE_BRACKET expression R_SQUARE_BRACKET
                           {printf("var_spec->L_SQUARE_BRACKET expression R_SQUARE_BRACKET\n");}
                           |
@@ -328,6 +325,13 @@ var_spec:                 L_SQUARE_BRACKET expression R_SQUARE_BRACKET
                           {printf("var_spec->epsilon\n");}
                           ;
 
+ident:                    IDENT
+                          {printf("ident->IDENT %s\n", $1);}
+                          ;
+
+number:                   NUMBER
+                          {printf("number->NUMBER %d\n", $1);}
+                          ;
 
 %% 
 
