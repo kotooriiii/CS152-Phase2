@@ -18,15 +18,39 @@ void yyerror(const char * errorMessage)
 }
 
 %error-verbose
+
+%type<identifierVal> IDENT
+%type<numberVal> NUMBER
+
 %locations
+
+%token FUNCTION BEGIN_PARAMS END_PARAMS BEGIN_LOCALS END_LOCALS BEGIN_BODY END_BODY INTEGER ARRAY ENUM OF IF THEN ENDIF ELSE FOR WHILE DO BEGINLOOP ENDLOOP CONTINUE READ WRITE TRUE FALSE RETURN SEMICOLON COLON COMMA
+
+%left L_PAREN R_PAREN
+
+%left L_SQUARE_BRACKET R_SQUARE_BRACKET
+
+%right UMINUS
+
+%left MULT DIV MOD 
+
+%left ADD SUB
+
+%left NEQ EQ GTE GT LTE LT
+
+%right NOT
+
+%left AND
+
+%left OR
+
+%right ASSIGN
+
+%token IDENT
+%token NUMBER
 
 /* %start program */
 %start program
-
-%token FUNCTION BEGIN_PARAMS END_PARAMS BEGIN_LOCALS END_LOCALS BEGIN_BODY END_BODY INTEGER ARRAY ENUM OF IF THEN ENDIF ELSE FOR WHILE DO BEGINLOOP ENDLOOP CONTINUE READ WRITE AND OR NOT TRUE FALSE RETURN SUB ADD MULT DIV MOD EQ NEQ LT GT LTE GTE SEMICOLON COLON COMMA L_PAREN R_PAREN L_SQUARE_BRACKET R_SQUARE_BRACKET ASSIGN
-
-%token <numberVal> NUMBER
-%token <identifierVal> IDENT
 
 %% 
 /* write your rules here */
@@ -253,17 +277,18 @@ multiplicative_operators: MOD term multiplicative_operators
                           {printf("multiplicative_operators->epsilon\n");}
                           ;
 
-term:                     subs var
-                          {printf("term->subs var\n");}
+term:                     term_spec
+                          {printf("term->term_spec\n");}
                           |
                           subs NUMBER
                           {printf("term->subs NUMBER\n");}
                           |
                           subs L_PAREN expression R_PAREN
                           {printf("term->subs L_PAREN expression R_PAREN\n");}
-                          |
-                          IDENT L_PAREN expressions R_PAREN
-                          {printf("term->IDENT L_PAREN expressions R_PAREN\n");}
+                          ;
+
+term_spec:                subs IDENT var_or_bottom
+                          {printf("term_spec->subs IDENT var_or_bottom\n");}
                           ;
 
 subs:                     SUB
@@ -283,12 +308,26 @@ expressions:              expression COMMA expressions
                           {printf("expressions->epsilon\n");}
                           ;
 
-var:                      IDENT
-                          {printf("var->IDENT\n");}
-                          |
-                          IDENT L_SQUARE_BRACKET expression R_SQUARE_BRACKET
-                          {printf("var->IDENT L_SQUARE_BRACKET expression R_SQUARE_BRACKET\n");}
+var:                      IDENT var_spec
+                          {printf("var->IDENT var_spec\n");}
                           ;
+
+var_or_bottom:            var_spec
+                          {printf("var_or_bottom->var_spec\n");}
+                          |
+                          L_PAREN expressions R_PAREN
+                          {printf("var_or_bottom->L_PAREN expressions R_PAREN\n");}
+                          ;
+
+
+
+var_spec:                 L_SQUARE_BRACKET expression R_SQUARE_BRACKET
+                          {printf("var_spec->L_SQUARE_BRACKET expression R_SQUARE_BRACKET\n");}
+                          |
+                          /*epsilon*/
+                          {printf("var_spec->epsilon\n");}
+                          ;
+
 
 %% 
 
